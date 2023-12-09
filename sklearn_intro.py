@@ -31,3 +31,24 @@ y_pred = ppn.predict(X_test_std)
 print("Misclassified examples: %d" % (y_test != y_pred).sum())
 from sklearn.metrics import accuracy_score
 print("Accuracy: %.3f" % accuracy_score(y_test, y_pred))
+
+# Fit logistic regression model
+from sklearn.linear_model import LogisticRegression
+lr = LogisticRegression(C=10.0, random_state=1,
+                        solver='lbfgs', multi_class='multinomial')
+lr.fit(X_train_std, y_train)
+# Predict class labels of test data
+y_pred_lr = lr.predict(X_test_std)
+
+import matplotlib.pyplot as plt
+plt.scatter(X_test[y_pred_lr == 0, 0], X_test[y_pred_lr == 0, 1],
+            color='red', marker='o', label="0")
+plt.scatter(X_test[y_pred_lr == 1, 0], X_test[y_pred_lr == 1, 1],
+            color='green', marker='o', label="1")
+plt.scatter(X_test[y_pred_lr == 2, 0], X_test[y_pred_lr == 2, 1],
+            color='blue', marker='o', label="2")
+plt.xlabel("petal length [cm]")
+plt.ylabel("petal width [cm]")
+plt.legend(loc='upper left')
+plt.title("Predicted class by petal length, width")
+plt.show()
